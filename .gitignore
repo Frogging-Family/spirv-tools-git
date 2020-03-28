@@ -13,7 +13,7 @@
 *.old
 *.db
 *.files
-*/src/
-*/pkg/
+src/
+pkg/
 SPIRV-Headers/
 SPIRV-Tools/
