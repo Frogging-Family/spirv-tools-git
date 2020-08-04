@@ -23,7 +23,7 @@ plain '             `.-:///////:-.`'
 _NUKR="true"
 
 pkgname=('spirv-tools-tkg-git' 'lib32-spirv-tools-tkg-git')
-pkgver=2020.3.r4.g636f449e
+pkgver=2020.4.r36.g92a71657
 pkgrel=1
 pkgdesc='API and commands for processing SPIR-V modules'
 url='https://github.com/KhronosGroup/SPIRV-Tools'
@@ -86,6 +86,7 @@ package_spirv-tools-tkg-git() {
 
   make DESTDIR="${pkgdir}" install
 
+  ln -s "${pkgdir}/usr/lib/libSPIRV-Tools-shared.so" "${pkgdir}/usr/lib/libSPIRV-Tools.so"
   install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 ../LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
@@ -98,6 +99,7 @@ package_lib32-spirv-tools-tkg-git() {
 
   make DESTDIR="${pkgdir}" install
 
+  ln -s "${pkgdir}/usr/lib32/libSPIRV-Tools-shared.so" "${pkgdir}/usr/lib32/libSPIRV-Tools.so"
   rm -rf ${pkgdir}/usr/lib
   rm -rf ${pkgdir}/usr/include
   rm -rf ${pkgdir}/usr/bin
