@@ -23,7 +23,7 @@ plain '             `.-:///////:-.`'
 _NUKR="true"
 
 pkgname=('spirv-tools-tkg-git' 'lib32-spirv-tools-tkg-git')
-pkgver=2020.4.r36.g92a71657
+pkgver=2020.4.r67.gc20995ef
 pkgrel=1
 pkgdesc='API and commands for processing SPIR-V modules'
 url='https://github.com/KhronosGroup/SPIRV-Tools'
@@ -62,7 +62,7 @@ build() {
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_BUILD_TYPE=Release \
       -DSPIRV_WERROR=Off \
-      -DBUILD_SHARED_LIBS=ON \
+      -DBUILD_SHARED_LIBS=1 \
       -DSPIRV-Headers_SOURCE_DIR=${srcdir}/SPIRV-Headers
   make
 
@@ -73,7 +73,7 @@ build() {
       -DCMAKE_INSTALL_LIBDIR=lib32 \
       -DCMAKE_BUILD_TYPE=Release \
       -DSPIRV_WERROR=Off \
-      -DBUILD_SHARED_LIBS=ON \
+      -DBUILD_SHARED_LIBS=1 \
       -DSPIRV-Headers_SOURCE_DIR=${srcdir}/SPIRV-Headers
   make
 }
@@ -86,7 +86,6 @@ package_spirv-tools-tkg-git() {
 
   make DESTDIR="${pkgdir}" install
 
-  ln -s "${pkgdir}/usr/lib/libSPIRV-Tools-shared.so" "${pkgdir}/usr/lib/libSPIRV-Tools.so"
   install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 ../LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/"
 }
@@ -99,7 +98,6 @@ package_lib32-spirv-tools-tkg-git() {
 
   make DESTDIR="${pkgdir}" install
 
-  ln -s "${pkgdir}/usr/lib32/libSPIRV-Tools-shared.so" "${pkgdir}/usr/lib32/libSPIRV-Tools.so"
   rm -rf ${pkgdir}/usr/lib
   rm -rf ${pkgdir}/usr/include
   rm -rf ${pkgdir}/usr/bin
