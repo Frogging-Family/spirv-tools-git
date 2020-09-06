@@ -23,20 +23,16 @@ plain '             `.-:///////:-.`'
 _NUKR="true"
 
 pkgname=('spirv-tools-tkg-git' 'lib32-spirv-tools-tkg-git')
-pkgver=2020.4.r67.gc20995ef
+pkgver=2020.4.r99.gfd05605b
 pkgrel=1
 pkgdesc='API and commands for processing SPIR-V modules'
 url='https://github.com/KhronosGroup/SPIRV-Tools'
 arch=('i686' 'x86_64')
 license=('MIT')
 source=('git+https://github.com/KhronosGroup/SPIRV-Tools.git'
-        'git+https://github.com/KhronosGroup/SPIRV-Headers.git'
-        '64bit.toolchain'
-        '32bit.toolchain')
+        'git+https://github.com/KhronosGroup/SPIRV-Headers.git')
 sha1sums=('SKIP'
-          'SKIP'
-          '5b3c5b02327d8ce5fe0b0f211af62587969735ae'
-          'fc22fe8db8276b828dbef2467419195b0c2dd45b')
+          'SKIP')
 makedepends=('cmake' 'git' 'python' 'gcc-libs' 'lib32-gcc-libs')
 options=('staticlibs')
 
@@ -57,23 +53,23 @@ build() {
 
   cd "${srcdir}"/SPIRV-Tools/build64
   cmake .. \
-      -DCMAKE_TOOLCHAIN_FILE="${srcdir}"/64bit.toolchain \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_BUILD_TYPE=Release \
       -DSPIRV_WERROR=Off \
-      -DBUILD_SHARED_LIBS=1 \
       -DSPIRV-Headers_SOURCE_DIR=${srcdir}/SPIRV-Headers
   make
 
+  export CC="gcc -m32"
+  export CXX="g++ -m32"
+  export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+
   cd "${srcdir}"/SPIRV-Tools/build32
   cmake .. \
-      -DCMAKE_TOOLCHAIN_FILE="${srcdir}"/32bit.toolchain \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=lib32 \
       -DCMAKE_BUILD_TYPE=Release \
       -DSPIRV_WERROR=Off \
-      -DBUILD_SHARED_LIBS=1 \
       -DSPIRV-Headers_SOURCE_DIR=${srcdir}/SPIRV-Headers
   make
 }
