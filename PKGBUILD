@@ -23,7 +23,7 @@ plain '             `.-:///////:-.`'
 _NUKR="true"
 
 pkgname=('spirv-tools-tkg-git' 'lib32-spirv-tools-tkg-git')
-pkgver=2020.4.r99.gfd05605b
+pkgver=2020.6.r29.gb2cfc5d1c
 pkgrel=1
 pkgdesc='API and commands for processing SPIR-V modules'
 url='https://github.com/KhronosGroup/SPIRV-Tools'
@@ -33,7 +33,7 @@ source=('git+https://github.com/KhronosGroup/SPIRV-Tools.git'
         'git+https://github.com/KhronosGroup/SPIRV-Headers.git')
 sha1sums=('SKIP'
           'SKIP')
-makedepends=('cmake' 'git' 'python' 'gcc-libs' 'lib32-gcc-libs')
+makedepends=('cmake' 'git' 'python' 'gcc-libs' 'lib32-gcc-libs' 'ninja')
 options=('staticlibs')
 
 pkgver() {
@@ -53,12 +53,15 @@ build() {
 
   cd "${srcdir}"/SPIRV-Tools/build64
   cmake .. \
+      -GNinja \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=lib \
       -DCMAKE_BUILD_TYPE=Release \
       -DSPIRV_WERROR=Off \
+      -DBUILD_SHARED_LIBS=ON \
+      -DSPIRV_TOOLS_BUILD_STATIC=OFF \
       -DSPIRV-Headers_SOURCE_DIR=${srcdir}/SPIRV-Headers
-  make
+  ninja
 
   export CC="gcc -m32"
   export CXX="g++ -m32"
@@ -66,12 +69,15 @@ build() {
 
   cd "${srcdir}"/SPIRV-Tools/build32
   cmake .. \
+      -GNinja \
       -DCMAKE_INSTALL_PREFIX=/usr \
       -DCMAKE_INSTALL_LIBDIR=lib32 \
       -DCMAKE_BUILD_TYPE=Release \
       -DSPIRV_WERROR=Off \
+      -DBUILD_SHARED_LIBS=ON \
+      -DSPIRV_TOOLS_BUILD_STATIC=OFF \
       -DSPIRV-Headers_SOURCE_DIR=${srcdir}/SPIRV-Headers
-  make
+  ninja
 }
 
 package_spirv-tools-tkg-git() {
@@ -80,7 +86,7 @@ package_spirv-tools-tkg-git() {
 
   cd "${srcdir}"/SPIRV-Tools/build64
 
-  make DESTDIR="${pkgdir}" install
+  DESTDIR="${pkgdir}" ninja install
 
   install -dm755 "${pkgdir}/usr/share/licenses/${pkgname}"
   install -m644 ../LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/"
@@ -92,7 +98,7 @@ package_lib32-spirv-tools-tkg-git() {
 
   cd "${srcdir}"/SPIRV-Tools/build32
 
-  make DESTDIR="${pkgdir}" install
+  DESTDIR="${pkgdir}" ninja install
 
   rm -rf ${pkgdir}/usr/lib
   rm -rf ${pkgdir}/usr/include
