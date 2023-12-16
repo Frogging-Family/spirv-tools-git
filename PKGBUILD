@@ -23,14 +23,14 @@ plain '             `.-:///////:-.`'
 _NUKR="true"
 
 pkgname=('spirv-tools-tkg-git' 'lib32-spirv-tools-tkg-git')
-pkgver=2020.6.r29.gb2cfc5d1c
+pkgver=2023.5.rc1.r38.ge03c8f5c8
 pkgrel=1
 pkgdesc='API and commands for processing SPIR-V modules'
 url='https://github.com/KhronosGroup/SPIRV-Tools'
 arch=('i686' 'x86_64')
 license=('MIT')
-source=('git+https://github.com/KhronosGroup/SPIRV-Tools.git'
-        'git+https://github.com/KhronosGroup/SPIRV-Headers.git')
+source=('git+https://github.com/KhronosGroup/SPIRV-Tools.git#branch=main'
+        'git+https://github.com/KhronosGroup/SPIRV-Headers.git#branch=main')
 sha1sums=('SKIP'
           'SKIP')
 makedepends=('cmake' 'git' 'python' 'gcc-libs' 'lib32-gcc-libs' 'ninja')
